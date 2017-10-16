@@ -32,6 +32,7 @@ services:
       - /var/run/docker.sock:/var/run/docker.sock
     environment:
       - ROUTE_URIS=logstash+tcp://logstash:5000
+    restart: unless-stopped
     depends_on:
       - logstash
 
