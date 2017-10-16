@@ -9,13 +9,16 @@ services:
       - "9300:9300"
     environment:
       ES_JAVA_OPTS: "-Xmx256m -Xms256m"
-
+    labels:
+      io.rancher.container.pull_image: always
   logstash:
     image: image.token.im/consenlabs/logstash
     ports:
       - "5000:5000"
     environment:
       LS_JAVA_OPTS: "-Xmx256m -Xms256m"
+    labels:
+      io.rancher.container.pull_image: always
     depends_on:
       - elasticsearch
 
@@ -23,6 +26,8 @@ services:
     image: image.token.im/consenlabs/kibana
     ports:
       - "5601:5601"
+    labels:
+      io.rancher.container.pull_image: always
     depends_on:
       - elasticsearch
 
@@ -33,6 +38,9 @@ services:
     environment:
       - ROUTE_URIS=logstash+tcp://logstash:5000
     restart: unless-stopped
+    labels:
+      io.rancher.container.pull_image: always
+      io.rancher.scheduler.affinity:container_label_ne: io.rancher.stack_service.name=logspout
     depends_on:
       - logstash
 
