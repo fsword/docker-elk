@@ -1,14 +1,10 @@
 version: '2'
 
-volumes:
-  elasticsearch:
-    driver: rancher-nfs
-
 services:
   elasticsearch:
     image: image.token.im/consenlabs/elasticsearch
     volumes:
-    - elasticsearch:/usr/share/elasticsearch
+    - /data/elasticsearch:/usr/share/elasticsearch/data
     environment:
       ES_JAVA_OPTS: "-Xmx256m -Xms256m"
     labels:
@@ -19,7 +15,7 @@ services:
       LS_JAVA_OPTS: "-Xmx256m -Xms256m"
     labels:
       io.rancher.container.pull_image: always
-    depends_on:
+    links:
       - elasticsearch
 
   kibana:
@@ -28,7 +24,7 @@ services:
       - "5601:5601"
     labels:
       io.rancher.container.pull_image: always
-    depends_on:
+    links:
       - elasticsearch
 
   logspout:
@@ -41,6 +37,6 @@ services:
     labels:
       io.rancher.scheduler.global: 'true'
       io.rancher.container.pull_image: always
-    depends_on:
+    links:
       - logstash
 
