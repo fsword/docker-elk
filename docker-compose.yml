@@ -9,6 +9,7 @@ services:
       ES_JAVA_OPTS: "-Xmx256m -Xms256m"
     labels:
       io.rancher.container.pull_image: always
+      io.rancher.scheduler.affinity:host_label: node_type=service
   logstash:
     image: image.token.im/consenlabs/logstash
     environment:
